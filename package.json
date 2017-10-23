@@ -1,12 +1,17 @@
 {
   "name": "@gnosis.pm/olympia-token",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Olympia token implementation",
   "main": "index.js",
   "scripts": {
     "compile": "truffle compile",
     "migrate": "truffle migrate",
-    "test": "run-with-testrpc -a 183 'truffle test'"
+    "test": "run-with-testrpc -a 183 'truffle test'",
+    "networks": "truffle networks",
+    "injectnetinfo": "node scripts/inject_network_info.js",
+    "extractnetinfo": "node scripts/extract_network_info.js",
+    "resetnetinfo": "truffle networks --clean && node scripts/inject_network_info.js",
+    "prepublishOnly": "truffle compile && truffle networks --clean && node scripts/inject_network_info.js"
   },
   "repository": {
     "type": "git",
@@ -19,8 +24,10 @@
   },
   "homepage": "https://github.com/gnosis/olympia-token#readme",
   "devDependencies": {
+    "lodash.merge": "^4.6.0",
     "run-with-testrpc": "^0.2.1",
-    "truffle": "^3.4.11"
+    "truffle": "^3.4.11",
+    "truffle-hdwallet-provider": "0.0.3"
   },
   "dependencies": {
     "@gnosis.pm/gnosis-core-contracts": "^0.3.6"

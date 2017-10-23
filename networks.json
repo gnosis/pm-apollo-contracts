@@ -1,0 +1,90 @@
+{
+  "Math": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0xae8bebc0f51db662653a2dc9d0140a30daf428a2",
+      "updated_at": 1508792319212
+    }
+  },
+  "Migrations": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x78cd66ef4588ce0e0e1e72eca877d042fd3f769a",
+      "updated_at": 1508792319217
+    }
+  },
+  "OlympiaToken": {
+    "4": {
+      "events": {
+        "0x9cb9c14f7bc76e3a89b796b091850526236115352a198b1e472f00e91376bbcb": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "Issuance",
+          "type": "event"
+        },
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Approval",
+          "type": "event"
+        }
+      },
+      "links": {
+        "Math": "0xae8bebc0f51db662653a2dc9d0140a30daf428a2"
+      },
+      "address": "0x72f80f429d8a8fbaf9e9f2f1baa1a3940c3beb8f",
+      "updated_at": 1508792319212
+    }
+  }
+}
