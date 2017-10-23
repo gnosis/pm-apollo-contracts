@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "truffle compile",
     "migrate": "truffle migrate",
-    "test": "run-with-testrpc 'truffle test'"
+    "test": "run-with-testrpc -a 183 'truffle test'"
   },
   "repository": {
     "type": "git",
