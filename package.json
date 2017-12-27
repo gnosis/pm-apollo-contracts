@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/gnosis/olympia-token#readme",
   "devDependencies": {
-    "lodash.merge": "^4.6.0",
-    "run-with-testrpc": "^0.2.1",
+    "lodash": "^4.17.4",
+    "run-with-testrpc": "^0.3.0",
     "truffle": "^3.4.11",
     "truffle-hdwallet-provider": "0.0.3"
   },
   "dependencies": {
-    "@gnosis.pm/gnosis-core-contracts": "^0.3.6"
+    "@gnosis.pm/gnosis-core-contracts": "^1.0.0"
   }
 }

@@ -13,10 +13,10 @@ const config = {
     },
 }
 
-const merge = require('lodash.merge')
+const _ = require('lodash')
 
 try {
-    merge(config, require('./truffle-local'))
+    _.merge(config, require('./truffle-local'))
 }
 catch(e) {
     if(e.code === 'MODULE_NOT_FOUND') {
