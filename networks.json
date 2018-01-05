@@ -1,4 +1,30 @@
 {
+  "AddressRegistry": {
+    "4": {
+      "events": {
+        "0xf8c82627a3a3645bba042f3ed2f746354291a134db31e99e175dcdf2c0128e7c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "registrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "registeredMainnetAddress",
+              "type": "address"
+            }
+          ],
+          "name": "AddressRegistration",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x79da1c9ef6bf6bc64e66f8abffddc1a093e50f13",
+      "updated_at": 1515168382409
+    }
+  },
   "Math": {
     "4": {
       "events": {},
@@ -12,7 +38,7 @@
       "events": {},
       "links": {},
       "address": "0x77f21adf85d28dd21411fa1dbb4e9444d5790b77",
-      "updated_at": 1513554550709
+      "updated_at": 1515168382417
     }
   },
   "OlympiaToken": {
