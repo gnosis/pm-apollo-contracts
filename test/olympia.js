@@ -1,5 +1,20 @@
+'use strict'
+
 const OlympiaToken = artifacts.require('OlympiaToken')
 const AddressRegistry = artifacts.require('AddressRegistry')
+const RewardClaimHandler = artifacts.require('RewardClaimHandler')
+const RewardToken = artifacts.require('RewardToken')
+RewardToken.link(artifacts.require('Math'))
+
+async function throwUnlessRejects(q) {
+    let res
+    try {
+        res = await q
+    } catch(e) {
+        return e
+    }
+    throw new Error(`got result ${ res } from ${ q }`)
+}
 
 contract('OlympiaToken', function(accounts) {
     let olympiaToken
@@ -66,5 +81,62 @@ contract('AddressRegistry', function(accounts) {
         .forEach((registeredMainnetAddress, i) => {
             assert.equal(registeredMainnetAddress, addressForIndex(i))
         })
+    })
+})
+
+contract('RewardClaimHandler', function(accounts) {
+    let rewardToken, rewardClaimHandler
+    let operator, randomWhale, winners, rewardAmounts, totalAmountRewarded
+
+    before(async () => {
+        rewardToken = await RewardToken.new()
+        rewardClaimHandler = await RewardClaimHandler.new(rewardToken.address)
+
+        operator = accounts[0]
+        winners = accounts.slice(1, 101)
+        randomWhale = accounts[101]
+        rewardAmounts = winners.map((winner, i) => i < 10 ? (10 - i) * 1e18 : 1e17)
+        totalAmountRewarded = rewardAmounts.reduce((a, b) => a + b)
+
+        await rewardToken.transfer(randomWhale, totalAmountRewarded * 2, { from: operator })
+
+        assert((await rewardToken.balanceOf(operator)).gt(totalAmountRewarded) &&
+            (await Promise.all(winners.map(winner => rewardToken.balanceOf(winner))))
+                .every(balance => balance.eq(0)))
+    })
+
+    it('should not allow anyone to register rewards with not enough allowance or bad input', async () => {
+        await rewardToken.approve(rewardClaimHandler.address, totalAmountRewarded / 10, { from: operator })
+        await throwUnlessRejects(rewardClaimHandler.registerRewards(winners, rewardAmounts, { from: operator }))
+        await rewardToken.approve(rewardClaimHandler.address, totalAmountRewarded, { from: operator })
+        await throwUnlessRejects(rewardClaimHandler.registerRewards(winners.slice(1), rewardAmounts, { from: operator }))
+    })
+
+    it('should only allow operator to register rewards', async () => {
+        await rewardToken.approve(rewardClaimHandler.address, totalAmountRewarded, { from: randomWhale })
+        await throwUnlessRejects(rewardClaimHandler.registerRewards(winners, rewardAmounts, { from: randomWhale }))
+    })
+
+    it('should allow operator to register rewards with contract', async () => {
+        const balanceBefore = await rewardToken.balanceOf(operator)
+        await rewardClaimHandler.registerRewards(winners, rewardAmounts, { from: operator })
+        const balanceAfter = await rewardToken.balanceOf(operator)
+        assert.equal(balanceBefore.sub(balanceAfter).valueOf(), totalAmountRewarded);
+
+        (await Promise.all(winners.map((w, i) => rewardClaimHandler.winners(i)))).forEach((winnerOnChain, i) =>
+            assert.equal(winnerOnChain, winners[i]))
+    })
+
+    it('should prevent operator from registering rewards while registered rewards still exist', async () => {
+        await rewardToken.approve(rewardClaimHandler.address, totalAmountRewarded, { from: operator })
+        await throwUnlessRejects(rewardClaimHandler.registerRewards(winners, rewardAmounts, { from: operator }))
+    })
+
+    it('should allow winners to receive rewards', async () => {
+        const claimantIndices = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 13, 34, 52]
+        const claimants = claimantIndices.map(i => winners[i])
+        const claimedRewards = claimantIndices.map(i => rewardAmounts[i])
+        const totalRewardsClaimed = claimedRewards.reduce((a, b) => a + b)
+        await Promise.all(claimants.map(claimant => rewardClaimHandler.claimReward({ from: claimant })));
     })
 })
