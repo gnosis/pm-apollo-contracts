@@ -1,5 +1,6 @@
 'use strict'
 
+const _ = require('lodash')
 const OlympiaToken = artifacts.require('OlympiaToken')
 const AddressRegistry = artifacts.require('AddressRegistry')
 const RewardClaimHandler = artifacts.require('RewardClaimHandler')
@@ -133,10 +134,22 @@ contract('RewardClaimHandler', function(accounts) {
     })
 
     it('should allow winners to receive rewards', async () => {
-        const claimantIndices = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 13, 34, 52]
+        const claimantIndices = _.sampleSize(_.range(winners.length), (.9 * winners.length) | 0)
         const claimants = claimantIndices.map(i => winners[i])
         const claimedRewards = claimantIndices.map(i => rewardAmounts[i])
         const totalRewardsClaimed = claimedRewards.reduce((a, b) => a + b)
+
+        const rchBalanceBefore = await rewardToken.balanceOf(rewardClaimHandler.address)
+        const balancesBefore = await Promise.all(claimants.map(claimant => rewardToken.balanceOf(claimant)))
+
         await Promise.all(claimants.map(claimant => rewardClaimHandler.claimReward({ from: claimant })));
+
+        const rchBalanceAfter = await rewardToken.balanceOf(rewardClaimHandler.address)
+        const balancesAfter = await Promise.all(claimants.map(claimant => rewardToken.balanceOf(claimant)))
+
+        _.zip(claimantIndices, claimants, claimedRewards, balancesBefore, balancesAfter).map(([i, claimant, reward, balBefore, balAfter]) => {
+            assert.equal(balAfter.sub(balBefore).valueOf(), reward, `Reward for claimant ${ i } is incorrect`)
+        })
+        assert.equal(rchBalanceBefore.sub(rchBalanceAfter).valueOf(), totalRewardsClaimed)
     })
 })
