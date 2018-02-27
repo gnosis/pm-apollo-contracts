@@ -5,11 +5,14 @@ const util = require('util')
 const _ = require('lodash')
 const { wait } = require('@digix/tempo')(web3);
 
+const MathLib = artifacts.require('Math')
 const OlympiaToken = artifacts.require('OlympiaToken')
+const PlayToken = artifacts.require('PlayToken')
+PlayToken.link(MathLib)
 const AddressRegistry = artifacts.require('AddressRegistry')
 const RewardClaimHandler = artifacts.require('RewardClaimHandler')
 const RewardToken = artifacts.require('RewardToken')
-RewardToken.link(artifacts.require('Math'))
+RewardToken.link(MathLib)
 
 async function throwUnlessRejects(q) {
     let res
@@ -35,22 +38,79 @@ contract('OlympiaToken', function(accounts) {
         assert.equal(await olympiaToken.symbol(), 'OLY')
         assert.equal(await olympiaToken.decimals(), 18)
     })
+})
+
+contract('PlayToken', function(accounts) {
+    const [creator, ...recipients] = accounts
+    let playToken
+
+    before(async () => {
+        playToken = await PlayToken.new({ from: creator })
+    })
 
     it('should allow the contract creator to issue tokens', async () => {
-        const [creator, ...recipients] = accounts
+        assert.equal(await playToken.creator(), creator)
+        assert.equal(await playToken.totalSupply(), 0)
 
-        assert.equal(await olympiaToken.creator(), creator)
-        assert.equal(await olympiaToken.totalSupply(), 0)
-
-        const startingBalances = (await Promise.all(recipients.map((r) => olympiaToken.balanceOf(r)))).map((v) => v.valueOf())
+        const startingBalances = (await Promise.all(recipients.map((r) => playToken.balanceOf(r)))).map((v) => v.valueOf())
         startingBalances.forEach((b, i) => assert.equal(b, 0, `recipient ${recipients[i]} balance`))
 
-        await olympiaToken.issue(recipients, 1e18)
+        await playToken.issue(recipients, 1e18)
 
-        const endingBalances =  (await Promise.all(recipients.map((r) => olympiaToken.balanceOf(r)))).map((v) => v.valueOf())
+        const endingBalances =  (await Promise.all(recipients.map((r) => playToken.balanceOf(r)))).map((v) => v.valueOf())
         endingBalances.forEach((b, i) => assert.equal(b, 1e18, `recipient ${recipients[i]} balance`))
 
-        assert.equal(await olympiaToken.totalSupply(), 1e18 * recipients.length)
+        assert.equal(await playToken.totalSupply(), 1e18 * recipients.length)
+    })
+
+    const [giver, getter, approver, spender, whitelisted1, whitelisted2, whitelisted3] = recipients
+
+    it('should forbid tokens from being transferred', async () => {
+        await throwUnlessRejects(playToken.transfer(getter, 1e16, { from: giver }))
+    })
+
+    it('should forbid tokens from being transferFromed', async () => {
+        await playToken.approve(spender, 1e16, { from: approver })
+        await throwUnlessRejects(playToken.transferFrom(approver, getter, 1e16, { from: spender }))
+    })
+
+    it('should allow only the contract creator to whitelist addresses for transfers from and to those addresses', async () => {
+        await throwUnlessRejects(playToken.allowTransfers([getter], { from: getter }))
+        await playToken.allowTransfers([whitelisted1, whitelisted2, whitelisted3], { from: creator })
+
+        for(let whitelisted of [whitelisted1, whitelisted2, whitelisted3]) {
+            await throwUnlessRejects(playToken.transfer(getter, 1e16, { from: giver }))
+            await playToken.transfer(getter, 1e16, { from: whitelisted })
+            await playToken.transfer(whitelisted, 1e16, { from: giver })
+
+            await playToken.approve(spender, 1e16, { from: approver })
+            await throwUnlessRejects(playToken.transferFrom(approver, getter, 1e16, { from: spender }))
+            await playToken.transferFrom(approver, whitelisted, 1e16, { from: spender })
+            await playToken.approve(spender, 1e16, { from: whitelisted })
+            await playToken.transferFrom(whitelisted, getter, 1e16, { from: spender })
+        }
+    })
+
+    it('should allow only the contract creator to take addresses off the whitelist', async () => {
+        await throwUnlessRejects(playToken.disallowTransfers([whitelisted1], { from: getter }))
+        // NOTE: specifying somebody not on the whitelist basically does nothing, but is otherwise valid
+        await playToken.disallowTransfers([getter, whitelisted2, whitelisted3], { from: creator })
+
+        await playToken.transfer(getter, 1e16, { from: whitelisted1 })
+        await playToken.transfer(whitelisted1, 1e16, { from: giver })
+        await playToken.approve(spender, 1e16, { from: approver })
+        await playToken.transferFrom(approver, whitelisted1, 1e16, { from: spender })
+        await playToken.approve(spender, 1e16, { from: whitelisted1 })
+        await playToken.transferFrom(whitelisted1, getter, 1e16, { from: spender })
+
+        for(let unwhitelisted of [whitelisted2, whitelisted3]) {
+            await throwUnlessRejects(playToken.transfer(getter, 1e16, { from: unwhitelisted }))
+            await throwUnlessRejects(playToken.transfer(unwhitelisted, 1e16, { from: giver }))
+            await playToken.approve(spender, 1e16, { from: approver })
+            await throwUnlessRejects(playToken.transferFrom(approver, unwhitelisted, 1e16, { from: spender }))
+            await playToken.approve(spender, 1e16, { from: unwhitelisted })
+            await throwUnlessRejects(playToken.transferFrom(unwhitelisted, getter, 1e16, { from: spender }))
+        }
     })
 })
 
