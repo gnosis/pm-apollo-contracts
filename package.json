@@ -1,6 +1,6 @@
 {
   "name": "@gnosis.pm/olympia-token",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "The Olympia token implementation",
   "main": "index.js",
   "scripts": {
