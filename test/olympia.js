@@ -38,6 +38,10 @@ contract('OlympiaToken', function(accounts) {
         assert.equal(await olympiaToken.symbol(), 'OLY')
         assert.equal(await olympiaToken.decimals(), 18)
     })
+
+    it('should be a PlayToken contract', async () => {
+        assert.ok(await olympiaToken.isPlayToken())
+    })
 })
 
 contract('PlayToken', function(accounts) {

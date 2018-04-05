@@ -29,6 +29,13 @@ contract PlayToken is StandardToken {
         creator = msg.sender;
     }
 
+    function isPlayToken()
+        public
+        constant returns (bool)
+    {
+        return true;
+    }
+
     /// @dev Allows creator to issue tokens. Will reject if msg.sender isn't the creator.
     /// @param recipients Addresses of recipients
     /// @param amount Number of tokens to issue each recipient
