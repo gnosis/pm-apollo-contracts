@@ -1,4 +1,6 @@
-# OLY Token Contract
+# Gnosis Olympia Contracts
+
+This is a collection of contracts related to specifically to Gnosis Olympia. These contracts can be used in setting up prediction market tournaments.
 
 This is the Olympia token contract implementation:
   - Rinkeby:
@@ -54,7 +56,14 @@ OlympiaToken: 0x2924e2338356c912634a513150e6ff5be890f7a0
 AddressRegistry: 0x12f73864dc1f603b2e62a36b210c294fd286f9fc
 ```
 
+We can extract this information about deployment addresses into `networks.json` with:
+
+```sh
+npm run extractnetinfo
+```
+
 # Issue tokens
+
 ```sh
 truffle exec scripts/issue_tokens.js --network=rinkeby --amount 1e18 --to <comma separated addresses>
 ```
