@@ -2,13 +2,13 @@
 
 This is the Olympia token contract implementation:
   - Rinkeby:
-    - Address: `0xa0c107Db0e9194c18359d3265289239453b56CF2`
-    - Creator: `0x0778858af811B0D6E95928cD7774BD63143EF31c`
+    - Address: `0x979861df79c7408553aaf20c01cfb3f81ccf9341`
+    - Creator: `0xcAb5bb0408C48780D38C452bE20E30da1A10e656`
 
 The mainnet address registry can be found:
   - Rinkeby:
-    - Address: `0x79DA1C9eF6bf6bC64E66F8AbFFDDC1A093E50f13`
-    - Creator: `0x76C5AF09C7724EdFD68dfCe98A9C6E15e48EaED7`
+    - Address: `0x6427d856450b20f6fab88be18d949faf9c4da512`
+    - Creator: `0xcAb5bb0408C48780D38C452bE20E30da1A10e656`
 
 # Deployment of custom contracts on Rinkeby
 
@@ -43,6 +43,8 @@ Then run:
 npm install
 npm run compile
 npm run migrate -- --network rinkeby
+# if you want to deploy the markets with another account (recommended), you will need to add those accounts as admins
+npm run migrate -- --network rinkeby --admins=address1,...,address2 (comma separated)
 ```
 
 You have now the addresses for AddressRegistry and Olympia Token, should be something like:
@@ -50,4 +52,9 @@ You have now the addresses for AddressRegistry and Olympia Token, should be some
 ```
 OlympiaToken: 0x2924e2338356c912634a513150e6ff5be890f7a0
 AddressRegistry: 0x12f73864dc1f603b2e62a36b210c294fd286f9fc
+```
+
+# Issue tokens
+```sh
+truffle exec scripts/issue_tokens.js --network=rinkeby --amount 1e18 --to <comma separated addresses>
 ```

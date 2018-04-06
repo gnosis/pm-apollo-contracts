@@ -21,24 +21,24 @@
         }
       },
       "links": {},
-      "address": "0x79da1c9ef6bf6bc64e66f8abffddc1a093e50f13",
-      "updated_at": 1515168382409
+      "address": "0x6427d856450b20f6fab88be18d949faf9c4da512",
+      "updated_at": 1523023217565
     }
   },
   "Math": {
     "4": {
       "events": {},
       "links": {},
-      "address": "0x1664f58466f59841e3a887b76727ad8cb24aa554",
-      "updated_at": 1513554550709
+      "address": "0x5536a946e869eb8f44eba2b3864fdf71e77b03b6",
+      "updated_at": 1523023157558
     }
   },
   "Migrations": {
     "4": {
       "events": {},
       "links": {},
-      "address": "0x77f21adf85d28dd21411fa1dbb4e9444d5790b77",
-      "updated_at": 1515168382417
+      "address": "0xb2ce454a63f31207bcef73daff18b21f2c51b7d1",
+      "updated_at": 1523023217565
     }
   },
   "OlympiaToken": {
@@ -107,10 +107,10 @@
         }
       },
       "links": {
-        "Math": "0x1664f58466f59841e3a887b76727ad8cb24aa554"
+        "Math": "0x5536a946e869eb8f44eba2b3864fdf71e77b03b6"
       },
-      "address": "0xa0c107db0e9194c18359d3265289239453b56cf2",
-      "updated_at": 1513554550706
+      "address": "0x979861df79c7408553aaf20c01cfb3f81ccf9341",
+      "updated_at": 1523023157558
     }
   }
 }

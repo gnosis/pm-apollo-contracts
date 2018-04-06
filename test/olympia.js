@@ -38,6 +38,10 @@ contract('OlympiaToken', function(accounts) {
         assert.equal(await olympiaToken.symbol(), 'OLY')
         assert.equal(await olympiaToken.decimals(), 18)
     })
+
+    it('should be a PlayToken contract', async () => {
+        assert.ok(await olympiaToken.isPlayToken())
+    })
 })
 
 contract('PlayToken', function(accounts) {
@@ -111,6 +115,21 @@ contract('PlayToken', function(accounts) {
             await playToken.approve(spender, 1e16, { from: unwhitelisted })
             await throwUnlessRejects(playToken.transferFrom(unwhitelisted, getter, 1e16, { from: spender }))
         }
+    })
+
+    it('should allow only the contract creator to add/remove admins', async () => {
+        // non creator cannot add admin
+        await throwUnlessRejects(playToken.addAdmin([whitelisted1], { from: getter }))
+        // non admin cannot allow transfers
+        await throwUnlessRejects(playToken.allowTransfers([whitelisted2], { from: whitelisted1 }))
+        // creator can add admins
+        const admin = whitelisted1
+        await playToken.addAdmin([admin], { from: creator })
+        // admin can allow transfers
+        await playToken.allowTransfers([whitelisted2], { from: admin })
+
+        // non creators, cannot remove admins
+        await throwUnlessRejects(playToken.addAdmin([whitelisted1], { from: getter }))
     })
 })
 

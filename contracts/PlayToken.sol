@@ -9,15 +9,28 @@ contract PlayToken is StandardToken {
     event Issuance(address indexed owner, uint amount);
 
     /*
+     *  Constants
+     */
+    bool public constant isPlayToken = true;
+
+    /*
      *  Storage
      */
     address public creator;
     mapping (address => bool) public whitelist;
+    mapping (address => bool) public admins;
 
     /*
      *  Modifiers
      */
-    modifier isCreator { require(msg.sender == creator); _; }
+    modifier isCreator { 
+        require(msg.sender == creator);
+        _;
+    }
+    modifier isAdmin { 
+        require(msg.sender == creator || admins[msg.sender] == true);
+        _;
+    }
 
     /*
      *  Public functions
@@ -48,7 +61,7 @@ contract PlayToken is StandardToken {
     /// @param allowed Addresses to be added to the whitelist
     function allowTransfers(address[] allowed)
         public
-        isCreator
+        isAdmin
     {
         for(uint i = 0; i < allowed.length; i++) {
             whitelist[allowed[i]] = true;
@@ -59,10 +72,32 @@ contract PlayToken is StandardToken {
     /// @param disallowed Addresses to be removed from the whitelist
     function disallowTransfers(address[] disallowed)
         public
-        isCreator
+        isAdmin
     {
         for(uint i = 0; i < disallowed.length; i++) {
             whitelist[disallowed[i]] = false;
+        }
+    }
+
+    /// @dev Allows creator to add admins that can whitelist addresses.
+    /// @param _admins Addresses to be added as admin role
+    function addAdmin(address[] _admins)
+        public
+        isCreator
+    {
+        for(uint i = 0; i < _admins.length; i++) {
+            admins[_admins[i]] = true;
+        }
+    }
+
+    /// @dev Allows creator to remove addresses from admin role.
+    /// @param _admins Addresses to be removed from the admin mapping
+    function removeAdmin(address[] _admins)
+        public
+        isCreator
+    {
+        for(uint i = 0; i < _admins.length; i++) {
+            admins[_admins[i]] = false;
         }
     }
 
