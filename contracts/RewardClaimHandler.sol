@@ -1,6 +1,6 @@
-pragma solidity 0.4.15;
+pragma solidity ^0.4.21;
 
-import "@gnosis.pm/gnosis-core-contracts/contracts/Tokens/Token.sol";
+import "@gnosis.pm/util-contracts/contracts/Token.sol";
 
 contract RewardClaimHandler {
     Token public rewardToken;
