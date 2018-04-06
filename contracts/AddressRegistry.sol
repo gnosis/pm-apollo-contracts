@@ -1,4 +1,4 @@
-pragma solidity 0.4.15;
+pragma solidity ^0.4.21;
 
 contract AddressRegistry {
     mapping (address => address) public mainnetAddressFor;
@@ -6,7 +6,7 @@ contract AddressRegistry {
     event AddressRegistration(address registrant, address registeredMainnetAddress);
 
     function register(address mainnetAddress) public {
-        AddressRegistration(msg.sender, mainnetAddress);
+        emit AddressRegistration(msg.sender, mainnetAddress);
         mainnetAddressFor[msg.sender] = mainnetAddress;
     }
 }

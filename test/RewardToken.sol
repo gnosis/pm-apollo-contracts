@@ -1,6 +1,6 @@
-pragma solidity 0.4.15;
+pragma solidity ^0.4.21;
 
-import "@gnosis.pm/gnosis-core-contracts/contracts/Tokens/StandardToken.sol";
+import "@gnosis.pm/util-contracts/contracts/StandardToken.sol";
 
 contract RewardToken is StandardToken {
     string public constant name = "Reward Token";

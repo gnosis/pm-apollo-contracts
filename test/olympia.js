@@ -5,14 +5,11 @@ const util = require('util')
 const _ = require('lodash')
 const { wait } = require('@digix/tempo')(web3);
 
-const MathLib = artifacts.require('Math')
 const OlympiaToken = artifacts.require('OlympiaToken')
 const PlayToken = artifacts.require('PlayToken')
-PlayToken.link(MathLib)
 const AddressRegistry = artifacts.require('AddressRegistry')
 const RewardClaimHandler = artifacts.require('RewardClaimHandler')
 const RewardToken = artifacts.require('RewardToken')
-RewardToken.link(MathLib)
 
 async function throwUnlessRejects(q) {
     let res
