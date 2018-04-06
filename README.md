@@ -53,3 +53,8 @@ You have now the addresses for AddressRegistry and Olympia Token, should be some
 OlympiaToken: 0x2924e2338356c912634a513150e6ff5be890f7a0
 AddressRegistry: 0x12f73864dc1f603b2e62a36b210c294fd286f9fc
 ```
+
+# Issue tokens
+```sh
+truffle exec scripts/issue_tokens.js --network=rinkeby --amount 1e18 --to <comma separated addresses>
+```
