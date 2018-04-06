@@ -43,6 +43,8 @@ Then run:
 npm install
 npm run compile
 npm run migrate -- --network rinkeby
+# if you want to deploy the markets with another account (recommended), you will need to add those accounts as admins
+npm run migrate -- --network rinkeby --admins=address1,...,address2 (comma separated)
 ```
 
 You have now the addresses for AddressRegistry and Olympia Token, should be something like:
