@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - '8'
-- '7'
+- 'node'
 before_deploy:
 - npm-prepublish --verbose --lax
 deploy:
@@ -11,5 +11,5 @@ deploy:
   on:
     branch: master
     tags: true
-    node: '7'
+    node: '8'
     repo: gnosis/olympia-token
