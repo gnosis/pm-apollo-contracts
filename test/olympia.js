@@ -4,6 +4,8 @@ const util = require('util')
 
 const _ = require('lodash')
 const { wait } = require('@digix/tempo')(web3);
+let { admins } = require('yargs').argv;
+admins = admins.split(',')
 
 const OlympiaToken = artifacts.require('OlympiaToken')
 const PlayToken = artifacts.require('PlayToken')
@@ -38,6 +40,17 @@ contract('OlympiaToken', function(accounts) {
 
     it('should be a PlayToken contract', async () => {
         assert.ok(await olympiaToken.isPlayToken())
+    })
+
+    it('admins should be able to be specified during the migration', async () => {
+        const nonAdminsNorCreator = accounts.slice(1).filter(account => admins.indexOf(account) === -1)
+        await Promise.all(
+            admins.map(
+                admin => olympiaToken.allowTransfers(nonAdminsNorCreator, { from: admin })
+            ).concat(nonAdminsNorCreator.map(
+                non => throwUnlessRejects(olympiaToken.allowTransfers(nonAdminsNorCreator, { from: non }))
+            ))
+        )
     })
 })
 
