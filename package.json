@@ -11,7 +11,7 @@
     "injectnetinfo": "node scripts/inject_network_info.js",
     "extractnetinfo": "node scripts/extract_network_info.js",
     "resetnetinfo": "truffle networks --clean && node scripts/inject_network_info.js",
-    "prepublishOnly": "truffle compile && truffle networks --clean && node scripts/inject_network_info.js"
+    "prepublish": "truffle compile && truffle networks --clean && node scripts/inject_network_info.js"
   },
   "repository": {
     "type": "git",
