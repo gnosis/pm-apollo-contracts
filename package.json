@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@gnosis.pm/util-contracts": "^0.2.0",
+    "npm-prepublish": "^1.2.3",
     "yargs": "^11.0.0"
   }
 }
