@@ -3,7 +3,7 @@ node_js:
 - '8'
 - 'node'
 before_deploy:
-- npm-prepublish --verbose --lax
+- npm run prepublish
 deploy:
   provider: npm
   email: denisgranha@gmail.com
