@@ -2,14 +2,12 @@ language: node_js
 node_js:
 - '8'
 - 'node'
-before_deploy:
-- npm run prepublish
 deploy:
   provider: npm
   email: denisgranha@gmail.com
   api_key: $NPM_TOKEN
   on:
-    branch: master
+    all_branches: true
     tags: true
     node: '8'
     repo: gnosis/olympia-token
