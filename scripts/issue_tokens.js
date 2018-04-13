@@ -4,7 +4,7 @@ const args = require('yargs').argv;
 module.exports = async function(callback) {
   if(args.amount && args.to) {
     const instance = await OlympiaToken.deployed()
-    await instance.issue(args.to.split(','), parseInt(args.amount), console.log)
+    await instance.issue(args.to.split(','), args.amount, console.log)
     console.log(`${args.amount} Tokens issued to ${args.to}`)
     callback()
   }
