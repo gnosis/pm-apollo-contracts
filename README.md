@@ -34,16 +34,62 @@ A registry of mainnet addresses for tournaments which run on a testnet like Rink
 
 A contract which stores rewards for winners, allowing them to claim the rewards by a deadline.
 
-# Redeploying the Contracts
+# Operations Overview
 
-See [this deployment guide](https://gnosis.github.io/lil-box/deployment-guide.html). You will need to execute `npm run truffle migrate -- --reset --network rinkeby` with the `--reset` flag.
+## Redeploying the Contracts
 
-# Issue tokens
+See [this deployment guide](https://gnosis.github.io/lil-box/deployment-guide.html). You will need to execute `npm run migrate -- --reset --network rinkeby` with the `--reset` flag.
 
-You can use the following script to have each address in a list issued 10^18 units of PlayToken:
+## Designating Admins
 
-```sh
-truffle exec scripts/issue_tokens.js --network=rinkeby --amount 1e18 --to <comma separated addresses>
+Administrator accounts can whitelist addresses for token addresses, as discussed above in the [PlayToken](#playtoken) section. These administrator accounts may be designated during migration by supplying them comma-separated to an `--admins` option:
+
+```js
+npm run migrate -- --reset --network rinkeby --admins=<comma separated addresses>
 ```
 
-Both the `amount` and the list of addresses are adjustable.
+They may also be provided after deployment by the deployer with the following script:
+
+```sh
+npm run add-admin -- --addresses=<comma separated addresses>
+```
+
+The deployer may also remove admins with the following script:
+
+```sh
+npm run remove-admin -- --addresses=<comma separated addresses>
+```
+
+## Transfer Whitelist Management
+
+The deployer and administrators can use the following script to allow transfers on a set of provided addresses:
+
+```sh
+npm run allow-transfers -- --addresses=<comma separated addresses>
+```
+
+They can similarly revoke arbitrary transfer capabilities with the following:
+
+```sh
+npm run disallow-transfers -- --addresses=<comma separated addresses>
+```
+
+## Issue tokens
+
+The deployer can use the following script to have each address in a list issued PlayToken:
+
+```sh
+npm run issue-tokens -- --amount <units of token> --to <comma separated addresses>
+```
+
+The `--amount` is expressed "in wei," or in the smallest units of the token. Thus, for most tokens, which have a `decimals` value of 18, one whole token would be expressed as `1e18` (scientific notation) of that token, e.g. `1e18 wei == 1 ether`.
+
+## `--from` and `--network`
+
+The `add-admin`, `remove-admin`, `allow-transfers`, `disallow-transfers`, and `issue-tokens` tokens also support `--from`, `--network`, and `--play-token-name` options (be sure to specify these after the first bare `--`).
+
+The `--from <account>` specifies an account with which to do the transaction.
+
+If you have deployments on multiple networks, you can specify the network you mean the script to interact with via the `--network <network name>` option.
+
+Finally, if you have happened to rename the PlayToken from OlympiaToken to something else, you can specify that name via the `--play-token-name <new case-sensitive name>` option.

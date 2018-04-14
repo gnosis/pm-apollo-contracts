@@ -1,14 +1,13 @@
-const OlympiaToken = artifacts.require('OlympiaToken')
-const args = require('yargs').argv;
-
-module.exports = async function(callback) {
-  if(args.amount && args.to) {
-    const instance = await OlympiaToken.deployed()
-    await instance.issue(args.to.split(','), args.amount, console.log)
-    console.log(`${args.amount} Tokens issued to ${args.to}`)
-    callback()
+module.exports = require('./play_token_cli_wrapper')(
+  artifacts,
+  async function(PlayToken, args) {
+    if(!args.amount || !args.to) {
+      throw "[Error] need to set --amount and --to parameters"
+    }
+    const instance = await PlayToken.deployed()
+    await instance.issue(args.to.split(','), args.amount)
+    console.log(`${args.amount} tokens issued to the following accounts:\n${
+      args.to.replace(',', '\n')
+    }`)
   }
-  else{
-    callback("[Error] need to set --amount and --to parameters")
-  }
-}
+)

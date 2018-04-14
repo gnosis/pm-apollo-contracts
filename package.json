@@ -4,6 +4,7 @@
   "description": "The Olympia token implementation",
   "main": "index.js",
   "scripts": {
+    "truffle": "truffle",
     "compile": "truffle compile",
     "migrate": "truffle migrate",
     "test": "run-with-testrpc -a 183 -d 'truffle test --admins=0x28a8746e75304c0780e011bed21c72cd78cd535e,0xaca94ef8bd5ffee41947b4585a84bda5a3d3da6e'",
@@ -11,7 +12,12 @@
     "injectnetinfo": "node scripts/inject_network_info.js",
     "extractnetinfo": "node scripts/extract_network_info.js",
     "resetnetinfo": "truffle networks --clean && node scripts/inject_network_info.js",
-    "prepublish": "truffle compile && truffle networks --clean && node scripts/inject_network_info.js"
+    "prepublish": "truffle compile && truffle networks --clean && node scripts/inject_network_info.js",
+    "issue-tokens": "truffle exec scripts/issue_tokens.js",
+    "add-admins": "truffle exec scripts/add_admins.js",
+    "remove-admins": "truffle exec scripts/remove_admins.js",
+    "allow-transfers": "truffle exec scripts/allow_transfers.js",
+    "disallow-transfers": "truffle exec scripts/disallow_transfers.js"
   },
   "repository": {
     "type": "git",
