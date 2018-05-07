@@ -1,7 +1,7 @@
 {
-  "name": "@gnosis.pm/olympia-token",
+  "name": "@gnosis.pm/pm-apollo-contracts",
   "version": "1.4.0",
-  "description": "The Olympia token implementation",
+  "description": "A collection of contracts for Gnosis Apollo",
   "main": "index.js",
   "scripts": {
     "truffle": "truffle",
