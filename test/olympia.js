@@ -44,13 +44,14 @@ contract('OlympiaToken', function(accounts) {
 
     it('admins should be able to be specified during the migration', async () => {
         const nonAdminsNorCreator = accounts.slice(1).filter(account => admins.indexOf(account) === -1)
-        await Promise.all(
-            admins.map(
-                admin => olympiaToken.allowTransfers(nonAdminsNorCreator, { from: admin })
-            ).concat(nonAdminsNorCreator.map(
-                non => throwUnlessRejects(olympiaToken.allowTransfers(nonAdminsNorCreator, { from: non }))
-            ))
-        )
+
+        await Promise.all(admins.map(
+            admin => olympiaToken.allowTransfers(nonAdminsNorCreator, { from: admin })
+        ))
+
+        await Promise.all(nonAdminsNorCreator.map(
+            non => throwUnlessRejects(olympiaToken.allowTransfers(nonAdminsNorCreator, { from: non }))
+        ))
     })
 })
 
