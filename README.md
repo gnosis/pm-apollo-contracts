@@ -1,6 +1,6 @@
-# Gnosis Olympia Contracts
+# Gnosis Apollo Contracts
 
-This is a collection of contracts related to specifically to Gnosis Olympia. These contracts can be used in setting up prediction market tournaments.
+This is a collection of contracts related to specifically to Gnosis Apollo. These contracts can be used in setting up prediction market tournaments like Olympia.
 
 This is the Olympia token contract implementation:
   - Rinkeby:
