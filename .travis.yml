@@ -10,4 +10,4 @@ deploy:
     all_branches: true
     tags: true
     node: '8'
-    repo: gnosis/olympia-token
+    repo: gnosis/pm-apollo-contracts
