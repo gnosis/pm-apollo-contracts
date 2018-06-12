@@ -6,10 +6,9 @@ module.exports = function(callback){
             (contract) => {
                 console.log("RewardClaimHandler: " + contract.address)
                 console.log("Transaction hash: "+ contract.transactionHash)
-
                 callback();
             }
-        )
+        ).catch(callback)
     }
     else{
         callback("Argument --token must be provided")
