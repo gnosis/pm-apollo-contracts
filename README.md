@@ -84,6 +84,13 @@ npm run issue-tokens -- --amount <units of token> --to <comma separated addresse
 
 The `--amount` is expressed "in wei," or in the smallest units of the token. Thus, for most tokens, which have a `decimals` value of 18, one whole token would be expressed as `1e18` (scientific notation) of that token, e.g. `1e18 wei == 1 ether`.
 
+## Deploy reward claim handler
+
+Every tournament use to have a reward for the winners as a reward token, in the case of Olympia, this token was GNO. In order to automate the reward claiming, we developed a contract to manage it, you can deploy it with:
+```sh
+npx truffle exec scripts/deploy_reward_contract.js --token=<token-address> --network=mainnet
+```
+
 ## `--from` and `--network`
 
 The `add-admin`, `remove-admin`, `allow-transfers`, `disallow-transfers`, and `issue-tokens` tokens also support `--from`, `--network`, and `--play-token-name` options (be sure to specify these after the first bare `--`).
