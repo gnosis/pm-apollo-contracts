@@ -1,6 +1,6 @@
 {
   "name": "@gnosis.pm/pm-apollo-contracts",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A collection of contracts for Gnosis Apollo",
   "main": "index.js",
   "scripts": {
