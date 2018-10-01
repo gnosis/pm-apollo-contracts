@@ -8,7 +8,10 @@ module.exports = function(callback){
                 console.log("Transaction hash: "+ contract.transactionHash)
                 callback();
             }
-        ).catch(callback)
+        ).catch((e) => {
+          console.error(e);
+          callback();
+        })
     }
     else{
         callback("Argument --token must be provided")
