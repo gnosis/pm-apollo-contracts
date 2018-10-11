@@ -39,6 +39,7 @@
   "dependencies": {
     "@gnosis.pm/util-contracts": "^0.2.0",
     "npm-prepublish": "^1.2.3",
+    "truffle-flattener": "^1.2.9",
     "truffle-privatekey-provider": "^0.1.0",
     "yargs": "^11.0.0"
   }
